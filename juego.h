@@ -1,4 +1,7 @@
-#ifndef JUEGO_H   // "si no está definido JUEGO_H..."
+
+#include <stdbool.h>
+
+#ifndef JUEGO_H  
 #define JUEGO_H 
 
 // tamaño del mapa
@@ -18,15 +21,14 @@
 #define PUERTA   'D'
 #define SALIDA   'E'
 
-
 typedef struct {
     int fila;           // posicion actual
     int columna;
 
-    int tiene_llave;    // 0 = no, 1 = si
+    bool llave;    // 0 = no, 1 = si
 
-    int monedas;        // en el nivel 
-    int pasos;          // en el nivel actual
+    int monedas_nivel;        // en el nivel 
+    int pasos_nivel;          // en el nivel actual
 
     int monedas_total;  // de todos los niveles
     int pasos_total;    // de todos los niveles
@@ -35,14 +37,6 @@ typedef struct {
     int puntaje;        
 } Jugador;
 
-//hechas en c
-void imprimir_mapa(char mapa[][COLS_MAPA], Jugador* j){
-    
-
-}
-
-
-void mover_jugador(char mapa[][COLS_MAPA], Jugador* j, char direccion);
 void mostrar_hud(Jugador* j, int total_monedas);
 void mostrar_resumen_nivel(Jugador* j, int total_monedas);
 void mostrar_resumen_final(Jugador* j, int total_monedas_global);
@@ -56,4 +50,10 @@ extern long long detectar_objeto(char *mapa, int columnas, int fila, int columna
 extern long long contar_celdas_libres(char *mapa, int total_celdas);
 
 
+
+///////
+void imprimir_mapa(char mapa[][COLS_MAPA], Jugador* j);
+int mover_jugador(char mapa[][COLS_MAPA], Jugador* j, char tecla);
+int validar_objeto(char celda, Jugador* j);
+void limpiar_celda(char mapa[][COLS_MAPA], int f, int c);
 #endif

@@ -1,32 +1,27 @@
-//gcc main.c juego.c -o main
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
 
 #include "juego.h"
+#include "juego.c"
 #include "mapas.h"
 
 int main(){
     Jugador j;
-    j.columna = 1;
-    j.fila = 1;
+    j.columna = 11;
+    j.fila = 2;
 
     char tecla;
     while(true) {
-        
-        system("cls");
-        imprimir_mapa(nivel1, &j);
-
         tecla = _getch();
         if (tecla == 'q' || tecla == 'Q') break;
-
+        
         int resultado = mover_jugador(nivel1, &j, tecla);
+        imprimir_mapa(nivel1, &j);
         
         if (resultado == 1) {
             printf("res: %d", resultado);
             break;
         }
-
 
     }
     return 0;
