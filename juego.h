@@ -54,6 +54,5 @@ extern long long contar_celdas_libres(char *mapa, int total_celdas);
 ///////
 void imprimir_mapa(char mapa[][COLS_MAPA], Jugador* j);
 int mover_jugador(char mapa[][COLS_MAPA], Jugador* j, char tecla);
-int validar_objeto(char celda, Jugador* j);
 void limpiar_celda(char mapa[][COLS_MAPA], int f, int c);
 #endif

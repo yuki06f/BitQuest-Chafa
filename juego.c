@@ -1,28 +1,6 @@
 
 #include <stdio.h>
-
 #include "juego.h"
-//asm
-int validar_objeto(char celda, Jugador* j){
-    switch (celda){
-        case MONEDA:
-            j->monedas_nivel++;
-            break;
-        case SALIDA:
-            j->nivel++;
-            return 1;
-            break;
-        case LLAVE:
-            j->llave = true;
-            break;
-        case PUERTA:
-            j->llave = false;
-            break;
-    }
-
-    return 0;
-
-}
 
 void limpiar_celda(char mapa[][COLS_MAPA], int f, int c){
     mapa[f][c] = CAMINO;
@@ -30,7 +8,6 @@ void limpiar_celda(char mapa[][COLS_MAPA], int f, int c){
 
 
 //hechas en c
-
 //inicio_fila = jugador.fila - (FILAS_VISTA / 2)
 //inicio_col  = jugador.columna - (COLS_VISTA / 2)
 
@@ -80,19 +57,42 @@ int mover_jugador(char mapa[][COLS_MAPA], Jugador* j, char tecla){
     if (celda == PUERTA && j->llave == false) return 0;
     
     else if (celda != PARED) {
-        n =  validar_objeto(celda, j);
-
-        if (celda == MONEDA || celda == LLAVE || celda == CAMINO)
+        // actualizar llave y monedas
+        if (celda == LLAVE) {
+            j->llave = true;
             limpiar_celda(mapa, nueva_fila, nueva_col);
+        }
+        else if (celda == MONEDA) {
+            j->monedas_nivel++;
+            limpiar_celda(mapa, nueva_fila, nueva_col);
+        }
+        else if (celda == SALIDA) {
+            j->fila    = nueva_fila;
+            j->columna = nueva_col;
+            j->pasos_nivel++;
+            return 1;  // nivel completado
+        }
 
-        // mover
         j->fila    = nueva_fila;
         j->columna = nueva_col;
         j->pasos_nivel++;
-
-        return n;
-        
+        return 0;
     }
 
     return 0;
+}
+
+//info hud del jugador
+void mostrar_hud(Jugador* j, int total_monedas){
+    printf("\n");
+    printf("\t----------------------------------------\n");
+    printf("\t               BIT QUEST                \n");
+    printf("\t----------------------------------------\n");
+    printf("\t  Nivel: %d\n", j->nivel);
+    printf("\t  Llave: %s\n", j->llave ? "SI [K]" : "NO");
+    printf("\t  Monedas: %d / %d\n", j->monedas_nivel, total_monedas);
+    printf("\t  Pasos en nivel: %d\n", j->pasos_nivel);
+    printf("\t----------------------------------------\n");
+    printf("\t  [W,A,S,D] Moverse  |  [Q] Salir\n");
+    printf("\t----------------------------------------\n");
 }
