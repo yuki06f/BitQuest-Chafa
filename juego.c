@@ -1,5 +1,7 @@
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
 #include "juego.h"
 
 void limpiar_celda(char mapa[][COLS_MAPA], int f, int c){
@@ -94,5 +96,28 @@ void mostrar_hud(Jugador* j, int total_monedas){
     printf("\t  Pasos en nivel: %d\n", j->pasos_nivel);
     printf("\t----------------------------------------\n");
     printf("\t  [W,A,S,D] Moverse  |  [Q] Salir\n");
+    printf("\t----------------------------------------\n");
+}
+
+void mostrar_resumen_nivel(Jugador* j, int total_monedas) {
+    system("cls");
+    printf("\t----------------------------------------\n");
+    printf("\t         NIVEL %d COMPLETADO\n", j->nivel);
+    printf("\t----------------------------------------\n");
+    printf("\t  Monedas recolectadas: %d / %d\n", j->monedas_nivel, total_monedas);
+    printf("\t  Pasos realizados: %d\n", j->pasos_nivel);
+    printf("\t----------------------------------------\n");
+    printf("\t  Presiona cualquier tecla...\n");
+    _getch();
+}
+
+void mostrar_resumen_final(Jugador* j, int total_monedas_global) {
+    printf("\t----------------------------------------\n");
+    printf("\t           JUEGO COMPLETADO\n");
+    printf("\t----------------------------------------\n");
+    printf("\t  Monedas totales: %d / %d\n", j->monedas_total, total_monedas_global);
+    printf("\t  Pasos totales: %d\n", j->pasos_total);
+    printf("\t  Niveles completados: %d\n", j->nivel - 1);
+    printf("\t  Puntaje final: %d\n", j->puntaje);
     printf("\t----------------------------------------\n");
 }

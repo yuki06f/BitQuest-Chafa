@@ -1,5 +1,5 @@
 @echo off
-echo Compilando
+echo Compilando Proyecto Final: BitQuest Chafa xd
 
 :: codigo nasm ensamblado
 nasm -f win64 rutinas.asm -o rutinas.obj

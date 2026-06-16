@@ -49,8 +49,6 @@ extern long long calcular_puntaje(int monedas, int pasos, int niveles);
 extern long long detectar_objeto(char *mapa, int columnas, int fila, int columna, char objeto);
 extern long long contar_celdas_libres(char *mapa, int total_celdas);
 
-
-
 ///////
 void imprimir_mapa(char mapa[][COLS_MAPA], Jugador* j);
 int mover_jugador(char mapa[][COLS_MAPA], Jugador* j, char tecla);

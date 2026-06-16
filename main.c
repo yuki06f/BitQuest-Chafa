@@ -1,51 +1,77 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <time.h>
+
 #include "juego.h"
 #include "mapas.h"
 
-int main(){
+void posicion_inicial(char mapa[][COLS_MAPA], Jugador *j) {
+    srand(time(NULL));
+    do {
+        j->fila    = rand() % (FILAS_MAPA - 2) + 1;
+        j->columna = rand() % (COLS_MAPA - 2) + 1;
+    } while (mapa[j->fila][j->columna] != CAMINO);
+}
+
+int main() {
     Jugador j = {0};
-    j.fila    = 1;
-    j.columna = 1;
-    j.nivel   = 1;
+    j.nivel = 1;
 
-    // calcular monedas del nivel 1
-    int total_monedas = (int)contar_caracter((char*)nivel1, FILAS_MAPA * COLS_MAPA, 'M');
+    // apuntadores a los 4 niveles
+    char (*mapas[4])[COLS_MAPA] = { nivel1, nivel2, nivel3, nivel4 };
 
-    char tecla;
-    while(1) {
-        system("cls");
-        mostrar_hud(&j, total_monedas);
-        imprimir_mapa(nivel1, &j);
+    int total_monedas_global = 0;
 
-        tecla = _getch();
-        if (tecla == 'q' || tecla == 'Q') break;
+    while (j.nivel <= 4) {
+        char (*mapa_actual)[COLS_MAPA] = mapas[j.nivel - 1];
 
-        int resultado = mover_jugador(nivel1, &j, tecla);
+        // inicializando
+        j.monedas_nivel = 0;
+        j.pasos_nivel   = 0;
+        j.llave         = false;
 
-        if (resultado == 1) {
-            // nivel completado
-            j.monedas_total += j.monedas_nivel;
-            j.pasos_total   += j.pasos_nivel;
-            printf("Nivel completado\n Monedas: %d/%d  Pasos: %d\n", j.monedas_nivel, total_monedas, j.pasos_nivel);
-            printf("\tPresiona una tecla...\n");
-            _getch();
-            break;
+        // posición aleatoria en celda libre
+        posicion_inicial(mapa_actual, &j);
+
+        // contar monedas del nivel con NASM
+        int total_monedas = (int)contar_caracter((char*)mapa_actual, FILAS_MAPA * COLS_MAPA, 'M');
+
+        // contar celdas libres con NASM (requisito obligatorio)
+        int celdas_libres = (int)contar_celdas_libres((char*)mapa_actual, FILAS_MAPA * COLS_MAPA);
+
+        // loop del nivel
+        while (true) {
+            system("cls");
+            mostrar_hud(&j, total_monedas);
+            printf("\t  Celdas libres: %d\n", celdas_libres);
+            imprimir_mapa(mapa_actual, &j);
+
+            char tecla = _getch();
+            if (tecla == 'q' || tecla == 'Q') goto fin;
+
+            int resultado = mover_jugador(mapa_actual, &j, tecla);
+
+            if (resultado == 1) {
+                // acumular estadísticas
+                j.monedas_total += j.monedas_nivel;
+                j.pasos_total += j.pasos_nivel;
+                total_monedas_global += total_monedas;
+
+                mostrar_resumen_nivel(&j, total_monedas);
+                j.nivel++;
+                break;
+            }
         }
     }
 
     // puntaje final con nasm
-    j.puntaje = (int)calcular_puntaje(j.monedas_total, j.pasos_total, j.nivel);
+    j.puntaje = (int)calcular_puntaje(j.monedas_total, j.pasos_total, 4);
 
     system("cls");
-    printf("\t------------------------------------\n");
-    printf("\t  Juego completado\n");
-    printf("\t  Monedas: %d\n", j.monedas_total);
-    printf("\t  Pasos:   %d\n", j.pasos_total);
-    printf("\t  Puntaje: %d\n", j.puntaje);
-    printf("\t------------------------------------\n");
+    mostrar_resumen_final(&j, total_monedas_global);
 
+fin:
     system("pause");
     return 0;
 }
