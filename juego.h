@@ -42,6 +42,10 @@ void mostrar_resumen_nivel(Jugador* j, int total_monedas);
 void mostrar_resumen_final(Jugador* j, int total_monedas_global);
 void iniciar_nivel(char mapa[][COLS_MAPA], Jugador* j);
 
+// pantallas
+void mostrar_pantalla_inicio();
+void mostrar_pantalla_victoria(Jugador* j, int total_monedas_global);
+
 //prototipos de las nasm
 extern long long contar_caracter(char *mapa, int total_celdas, char caracter);
 extern long long validar_movimiento(char *mapa, int columnas, int fila, int columna);
@@ -52,5 +56,6 @@ extern long long contar_celdas_libres(char *mapa, int total_celdas);
 ///////
 void imprimir_mapa(char mapa[][COLS_MAPA], Jugador* j);
 int mover_jugador(char mapa[][COLS_MAPA], Jugador* j, char tecla);
+int validar_objeto(char celda, Jugador* j);
 void limpiar_celda(char mapa[][COLS_MAPA], int f, int c);
 #endif
