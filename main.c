@@ -15,6 +15,9 @@ void posicion_inicial(char mapa[][COLS_MAPA], Jugador *j) {
 }
 
 int main() {
+    //mostrar pantalla de inicio
+    mostrar_pantalla_inicio();
+
     Jugador j = {0};
     j.nivel = 1;
 
@@ -68,10 +71,9 @@ int main() {
     // puntaje final con nasm
     j.puntaje = (int)calcular_puntaje(j.monedas_total, j.pasos_total, 4);
 
-    system("cls");
-    mostrar_resumen_final(&j, total_monedas_global);
+    //mostrar resumen final
+    mostrar_resumen_nivel(&j, total_monedas_global);
 
 fin:
-    system("pause");
     return 0;
 }
