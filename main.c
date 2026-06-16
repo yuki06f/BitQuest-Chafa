@@ -37,10 +37,10 @@ int main() {
         // posición aleatoria en celda libre
         posicion_inicial(mapa_actual, &j);
 
-        // contar monedas del nivel con NASM
+        // contar monedas del nivel con nasm
         int total_monedas = (int)contar_caracter((char*)mapa_actual, FILAS_MAPA * COLS_MAPA, 'M');
 
-        // contar celdas libres con NASM (requisito obligatorio)
+        // contar celdas libres nasm
         int celdas_libres = (int)contar_celdas_libres((char*)mapa_actual, FILAS_MAPA * COLS_MAPA);
 
         // loop del nivel
@@ -56,7 +56,7 @@ int main() {
             int resultado = mover_jugador(mapa_actual, &j, tecla);
 
             if (resultado == 1) {
-                // acumular estadísticas
+                // estadisticas acumuladas
                 j.monedas_total += j.monedas_nivel;
                 j.pasos_total += j.pasos_nivel;
                 total_monedas_global += total_monedas;
